@@ -53,4 +53,10 @@ define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$
     owner => $user,
     group => $user,
   }
+  file{ $root:
+   ensure => directory
+  }
+  user{ $user:
+    ensure => present
+  }
 }
