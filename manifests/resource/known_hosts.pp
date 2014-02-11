@@ -46,11 +46,14 @@ define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$
   Exec {
     user => $user,
     group => $user,
-    require => [File[$root], User[$user]],
+    require => File[$root],
   }
   File {
     ensure => $ensure ? { present => file, default => absent },
     owner => $user,
     group => $user,
+  }
+  file{ $root:
+   ensure => directory
   }
 }
