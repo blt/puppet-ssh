@@ -27,6 +27,7 @@ define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$
   exec { "create hash of hosts for $user in $root":
     command => "echo '$hosts' | $sha | $awk > $hosthash",
     unless  => "[ -f $hosthash ] && [ `$sha $hosthash | $awk` = `echo '$hosts' | $sha | $awk | $sha | $awk` ]",
+    path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
   }
   file { $hosthash:
     mode => 0600,
@@ -37,6 +38,7 @@ define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$
     command => "echo '$hosts' | $sed | ssh-keyscan -H -f - > $root/known_hosts",
     refreshonly => true,
     subscribe => Exec["create hash of hosts for $user in $root"],
+    path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
   }
   file { "${known_hosts}":
     mode => 0600,
