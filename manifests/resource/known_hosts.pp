@@ -17,6 +17,7 @@
 define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$user/.ssh") {
   $hosthash = "$root/host_hash"
   $sed = "sed 's/,/\\n/g'"
+  $tr = "tr ',' '\\n'"
   $sha = "sha512sum"
   $awk = "awk '{ print \$1 }'"
   $hashcmd = "sha512sum | $awk"
@@ -35,7 +36,7 @@ define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$
 
   # Construct the right and proper known_hosts file.
   exec { "create $root/known_hosts":
-    command => "echo '$hosts' | $sed | ssh-keyscan -H -f - > $root/known_hosts",
+    command => "echo '$hosts' | $tr | ssh-keyscan -H -f - > $root/known_hosts",
     refreshonly => true,
     subscribe => Exec["create hash of hosts for $user in $root"],
     path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
