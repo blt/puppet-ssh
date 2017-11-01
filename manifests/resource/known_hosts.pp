@@ -31,7 +31,7 @@ define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$
     path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
   }
   file { $hosthash:
-    mode => 0600,
+    mode => '0600',
   }
 
   # Construct the right and proper known_hosts file.
@@ -42,7 +42,7 @@ define ssh::resource::known_hosts($ensure=present, $hosts, $user, $root="/home/$
     path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ],
   }
   file { "${known_hosts}":
-    mode => 0600,
+    mode => '0600',
   }
 
   ## Ensure that all files and execs get the correct user/group combinations.

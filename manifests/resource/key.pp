@@ -13,7 +13,7 @@ define ssh::resource::key($ensure=present, $user, $root="/home/$user/.ssh",
   $bits=4096, $passphrase='', $type='rsa') {
   file { $root:
     ensure => $ensure ? { present => directory, default => absent },
-    mode => 0700,
+    mode => '0700',
     owner => $user,
     group => $user,
   }
@@ -28,10 +28,10 @@ define ssh::resource::key($ensure=present, $user, $root="/home/$user/.ssh",
   }
   file {
     $keypath:
-      mode => 0600,
+      mode => '0600',
       require => Exec["create ssh-key for $user with name $title"];
     "${keypath}.pub":
-      mode => 0644,
+      mode => '0644',
       require => Exec["create ssh-key for $user with name $title"];
   }
 }
